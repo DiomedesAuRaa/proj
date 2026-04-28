@@ -73,6 +73,8 @@ There are a lot of moving parts here: .NET builds, unit tests, Docker images, Nu
 
 If you do not have access to infrastructure needed to fully deploy the service, it is okay to mock pieces of the solution. You can use placeholder manifests, commented workflow steps, or documented assumptions. If you want a fully working deployment target, feel free to use a free or trial environment such as Microsoft Azure or another provider.
 
+During the technical interview, you will be expected to walk through your submission. At a minimum, you should have the application running and accessible locally so you can demonstrate it live.
+
 We value:
 
 - Clear automation and repeatability
