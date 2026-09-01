@@ -1,3 +1,7 @@
+FROM mcr.microsoft.com/dotnet/sdk:10
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+FROM mcr.microsoft.com/dotnet/aspnet:10
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 # Multi-stage build for .NET API
 FROM mcr.microsoft.com/dotnet/sdk:10.0.400-alpine AS builder
 
