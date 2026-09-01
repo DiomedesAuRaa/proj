@@ -101,8 +101,8 @@ spec:
       serviceAccountName: candidate-api
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        fsGroup: 1000
+        runAsUser: 1654
+        fsGroup: 1654
         seccompProfile:
           type: RuntimeDefault
       containers:

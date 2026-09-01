@@ -1,9 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:10
-FROM mcr.microsoft.com/dotnet/sdk:10.0
-FROM mcr.microsoft.com/dotnet/aspnet:10
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
 # Multi-stage build for .NET API
-FROM mcr.microsoft.com/dotnet/sdk:10.0.400-alpine AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.400-noble AS builder
 
 WORKDIR /src
 
@@ -33,21 +30,18 @@ RUN dotnet publish --configuration Release --no-build -o /app/publish src/Candid
 RUN dotnet pack --configuration Release --no-build -o /app/packages src/CandidateApi.Contracts/CandidateApi.Contracts.csproj
 
 # Final runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:10.0.400-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 
 WORKDIR /app
 
-# Create non-root user for security
-RUN useradd -m -u 1000 appuser
-
 # Copy published application from builder
-COPY --from=builder --chown=appuser:appuser /app/publish .
+COPY --from=builder --chown=app:app /app/publish .
 
 # Create read-only filesystem except for required directories
-RUN mkdir -p /app/logs && chown appuser:appuser /app/logs
+RUN mkdir -p /app/logs && chown app:app /app/logs
 
 # Switch to non-root user
-USER appuser
+USER app
 
 # Health check
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
