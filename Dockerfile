@@ -1,5 +1,5 @@
 # Multi-stage build for .NET API
-FROM mcr.microsoft.com/dotnet/sdk:10.0-bookworm AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10 AS builder
 
 WORKDIR /src
 
@@ -29,7 +29,7 @@ RUN dotnet publish --configuration Release --no-build -o /app/publish src/Candid
 RUN dotnet pack --configuration Release --no-build -o /app/packages src/CandidateApi.Contracts/CandidateApi.Contracts.csproj
 
 # Final runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-bookworm AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10 AS runtime
 
 WORKDIR /app
 

@@ -81,6 +81,7 @@ jobs:
           cache-to: type=gha,mode=max
       
       - name: Run Trivy vulnerability scan
+        if: success()
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${{ github.sha }}
@@ -89,8 +90,8 @@ jobs:
           severity: 'CRITICAL,HIGH'
       
       - name: Upload Trivy results
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        if: hashFiles('trivy-results.sarif') != ''
         with:
           sarif_file: 'trivy-results.sarif'
 
