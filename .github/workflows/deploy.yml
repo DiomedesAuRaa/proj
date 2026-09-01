@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/candidate-api
+  IMAGE_NAME: diomedesauraa/candidate-api
   DOTNET_VERSION: '10.0.x'
 
 jobs:
