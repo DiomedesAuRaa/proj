@@ -112,7 +112,8 @@ jobs:
           # and apply the manifests from k8s/dev/
           # kubectl apply -f k8s/dev/
           # For now, we document the deployment step
-          cat k8s/dev/deployment.yaml | sed 's|IMAGE_TAG|${{ needs.build.outputs.image-tag }}|g'
+          grep -q 'IMAGE_TAG' k8s/dev/deployment.yaml
+          echo "Manifest validation passed; Kubernetes apply requires a configured cluster."
       
       - name: Run smoke tests on Dev
         run: |
@@ -136,7 +137,8 @@ jobs:
       - name: Deploy to Test
         run: |
           echo "Promoting build to test environment"
-          cat k8s/test/deployment.yaml | sed 's|IMAGE_TAG|${{ needs.build.outputs.image-tag }}|g'
+          grep -q 'IMAGE_TAG' k8s/test/deployment.yaml
+          echo "Manifest validation passed; Kubernetes apply requires a configured cluster."
       
       - name: Run smoke tests on Test
         run: |
