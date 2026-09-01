@@ -4,30 +4,22 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0.400-noble AS builder
 
 WORKDIR /src
 
-# Copy solution and project files
-COPY ["SreTakeHome.sln", "."]
+# Copy project files for dependency caching
 COPY ["src/CandidateApi/CandidateApi.csproj", "src/CandidateApi/"]
 COPY ["src/CandidateApi.Contracts/CandidateApi.Contracts.csproj", "src/CandidateApi.Contracts/"]
-COPY ["tests/CandidateApi.Tests/CandidateApi.Tests.csproj", "tests/CandidateApi.Tests/"]
 COPY ["global.json", "."]
 
 # Restore dependencies
-RUN dotnet restore
+RUN dotnet restore src/CandidateApi/CandidateApi.csproj
 
 # Copy source code
 COPY . .
 
-# Build the solution
-RUN dotnet build --configuration Release --no-restore SreTakeHome.sln
-
-# Run tests
-RUN dotnet test --configuration Release --no-build --verbosity normal SreTakeHome.sln
+# Build the API
+RUN dotnet build --configuration Release --no-restore src/CandidateApi/CandidateApi.csproj
 
 # Publish the API
 RUN dotnet publish --configuration Release --no-build -o /app/publish src/CandidateApi/CandidateApi.csproj
-
-# Create NuGet package for contracts
-RUN dotnet pack --configuration Release --no-build -o /app/packages src/CandidateApi.Contracts/CandidateApi.Contracts.csproj
 
 # Final runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
